@@ -1,0 +1,53 @@
+<br>
+<div [hidden]="submitted" style="width: 400px;" class="container">
+  <h3>Create Exam</h3>
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+
+      <label for="title">titolo: </label>
+      <input type="text" class="form-control" id="titolo" required [(ngModel)]="user.titolo" name="titolo">
+    </div>
+
+    <div class="form-group">
+      <label for="course">indirizzo: </label>
+      <input type="text" class="form-control" id="indirizzo" required [(ngModel)]="user.indirizzo" name="indirizzo">
+    </div>
+
+    <div class="form-group">
+      <label for="tipo">tipo_prova: </label>
+      <input type="text" class="form-control" id="tipo_prova" required [(ngModel)]="user.tipo_prova" name="tipo_prova">
+    </div>
+
+    <div class="form-group">
+      <label for="difficulty">difficolta: </label>
+      <input type="text" class="form-control" id="difficolta" required [(ngModel)]="user.difficolta" name="difficolta">
+    </div>
+    <div class="form-group">
+      <label for="duration">durata: </label>
+      <input type="text" class="form-control" id="durata" required [(ngModel)]="user.durata" name="durata">
+    </div>
+    <div class="form-group">
+      <label for="classe">classe: </label>
+      <input type="text" class="form-control" id="classe" required [(ngModel)]="user.classe" name="classe">
+    </div>
+    <div class="form-group">
+      <label for="subject">materia: </label>
+      <input type="text" class="form-control" id="materia" required [(ngModel)]="user.materia" name="materia">
+    </div>
+    <div class="form-group">
+      <label for="subject">griglia: </label>
+      <input type="text" class="form-control" id="griglia" required [(ngModel)]="user.griglia" name="griglia">
+    </div>
+    <div class="form-group">
+      <label for="subject">testo: </label>
+      <input type="text" class="form-control" id="testo" required [(ngModel)]="user.testo" name="testo">
+    </div>
+    <br>
+    <button type="submit" class="btn btn-danger">Submit</button>
+    <a (click)="back()" style="cursor: pointer; right: 0; margin-left: 50pxpx;" class="btn btn-get-started scrollto" routerLinkActive="active">Back</a>
+  </form>
+</div>
+
+<div [hidden]="!submitted">
+  <h4>Successfully submitted!</h4>
+</div>

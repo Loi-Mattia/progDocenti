@@ -11,7 +11,7 @@ export class ExamService {
  
   private baseUrlPrin = flaskLink._API;
 
-  private baseUrl = this.baseUrlPrin + 'verifiche';
+  private baseUrl = this.baseUrlPrin + 'verifica';
 
   constructor(private http: HttpClient) { }
 

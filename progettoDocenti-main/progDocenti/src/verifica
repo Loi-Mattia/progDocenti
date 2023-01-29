@@ -1,13 +1,9 @@
 export class verifica{
-    classe: string="";
-    difficoltà: string="";
-    durata: int;
-    griglia: string="";
-    id: int;
-    indirizzo: string="";
-    materia: string="";
-    testo: string="";
-    tipo_prova: string="";
-    titolo: string="";
+    id: string = "";
+    testo: string = "";
+    griglia: string= "";
+    titolo: string= "";
+    difficolta: string= "";
+    materia: string= "";
+    durata: string= "";
 }
-"id":0,"indirizzo":"liceo scientifico","materia":"matematica","testo":"https://www.francescodaddi.it/wp-content/uploads/2019/06/raccolta_disequazioni_intere_fratte.pdf","tipo_prova":"domande aperte","titolo":"Verifica disequazioni"}

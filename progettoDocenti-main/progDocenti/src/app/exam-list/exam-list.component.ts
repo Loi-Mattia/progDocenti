@@ -31,8 +31,7 @@ export class ExamListComponent implements OnInit {
 
 
   deleteVerifica(id: string) {
-    this.userService.deleteVerifica(id)
-      .subscribe(
+    this.userService.deleteVerifica(id).subscribe(
         data => {
           console.log(data);
           this.reloadData();

@@ -5,8 +5,6 @@ import re
 from flask_restful import Resource, Api, reqparse
 from flask_cors import CORS
 import pymssql
-import pandas as pd
-from bson import json_util
 import json
 
 import psycopg2  # pip install psycopg2
@@ -19,8 +17,7 @@ app.secret_key = 'xyzsdfg'
 
 def connection():
     conn = pymssql.connect(server='213.140.22.237\SQLEXPRESS',
-                           user='franzetti.giulio', password='WWWWS7sN', database='franzetti.giulio')
-
+                            user='barbieri.riccardo', password='xxx123##', database='barbieri.riccardo')
     return conn
 
 
@@ -33,14 +30,14 @@ def index():
     return "Ciao"
 
 
-@app.route('/exams')
+@app.route('/verifica')
 def exams():
     # Create a connection
     conn = connection()
     # Create a cursor
     cur = conn.cursor(as_dict=True)
     # Execute the SQL SELECT statement
-    cur.execute("SELECT * FROM Progetto.verifica")
+    cur.execute("SELECT * FROM progetto.verifica")
     # Fetch all rows from the SELECT statement
     list_users = cur.fetchall()
     # Render the index.html template and pass the list of students
@@ -66,11 +63,11 @@ def login():
         cursor = conn.cursor()
         # Execute a SELECT query
         cursor.execute(
-            'SELECT * FROM Progetto.docente WHERE email=%s AND password=%s', (email, password))
+            'SELECT * FROM progetto.docente WHERE mail=%s AND password=%s', (email, password))
         # Fetch the data
         user = cursor.fetchone()
         if user:
-            return jsonify({"message": "Logged in successfully", "email": email, "password": password}), 200
+            return jsonify({"message": "Logged in successfully", "mail": email, "password": password}), 200
         else:
             return jsonify("Doesn't match"), 400
 
@@ -82,7 +79,7 @@ def logout():
     if 'loggedin' in session:
         session.pop('loggedin', None)
         session.pop('name', None)
-        session.pop('email', None)
+        session.pop('mail', None)
         return jsonify({"message": "Logged out successfully"}), 200
     else:
         return jsonify({"message": "You are not logged in"}), 400
@@ -93,32 +90,32 @@ def register():
     if request.method == 'POST':
         nome = request.json['nome']
         cognome = request.json['cognome']
-        email = request.json['email']
+        email = request.json['mail']
         password = request.json['password']
 
         conn = connection()
         # Create a cursor
         cursor = conn.cursor()
         # Execute a SELECT query
-        cursor.execute('SELECT * FROM Progetto.docente WHERE email=%s', (email))
+        cursor.execute('SELECT * FROM Progetto.docente WHERE mail=%s', (mail))
         # Fetch the data
         account = cursor.fetchone()
         if account:
             return jsonify({"message": "Account already exists"}), 400
-        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
-            return jsonify({"message": "Invalid email address"}), 400
-        elif not name or not password or not email:
+        elif not re.match(r'[^@]+@[^@]+\.[^@]+', mail):
+            return jsonify({"message": "Invalid mail address"}), 400
+        elif not name or not password or not mail:
             return jsonify({"message": "Please fill out the form"}), 400
         else:
             # Execute an INSERT query
             print("10")
             cursor.execute(
-                'INSERT INTO Progetto.docente (nome, cognome, email, password) VALUES (%s, %s, %s, %s)', (nome, cognome, email, password))
+                'INSERT INTO Progetto.docente (nome, cognome, mail, password) VALUES (%s, %s, %s, %s)', (nome, cognome, mail, password))
             conn.commit()
             return jsonify({"message": "You have successfully registered"}), 201
 
 
-@app.route('/verifiche', methods=['POST', 'GET'])
+@app.route('/verifica', methods=['POST', 'GET'])
 def data1():
     conn = connection()
     # Create a cursor
@@ -126,30 +123,29 @@ def data1():
     # POST a data to database
     if request.method == 'POST':
         body = request.json
-        titolo = body['titolo']
-        indirizzo = body['indirizzo']
-        tipo_prova = body['tipo_prova']
-        difficolta = body['difficolta']
-        durata = body['durata']
-        classe = body['classe']
-        materia = body['materia']
-        griglia = body['griglia']
         testo = body['testo']
+        griglia = body['griglia']
+        titolo = body['titolo']
+        difficolta = body['difficolta']
+        materia = body['materia']
+        durata = body['durata']
+  
+        
+        
+     
 
-        cur.execute("INSERT INTO Progetto.verifica (titolo,indirizzo,tipo_prova,difficolta,durata, classe,materia,griglia,testo) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-                    (titolo, indirizzo, tipo_prova, difficolta, durata, classe, materia, griglia, testo))
+        cur.execute("INSERT INTO progetto.verifica (testo,griglia,titolo,difficolta,materia, durata) VALUES (%s,%s,%s,%s,%s,%s)",
+                    (testo,griglia,titolo,difficolta,materia, durata))
         conn.commit()
         return jsonify({
             'status': 'Data is posted to SQLite!',
-            'titolo': titolo,
-            'indirizzo': indirizzo,
-            'tipo_prova': tipo_prova,
-            'difficolta': difficolta,
-            'durata': durata,
-            'classe': classe,
-            'materia': materia,
+            'testo': testo,
             'griglia': griglia,
-            'testo': testo
+            'titolo': titolo,
+            'difficolta': difficolta,
+            'materia': materia,
+            'durata': durata,
+      
         })
 
     # GET all data from database
@@ -157,38 +153,36 @@ def data1():
         conn = connection()
         # Create a cursor
         cur = conn.cursor(as_dict=True)
-        cur.execute("SELECT * FROM Progetto.verifica")
+        cur.execute("SELECT * FROM progetto.verifica")
         data = cur.fetchall()
         dataJson = []
         print(data)
         for doc in data:
             id = doc['id']
-            titolo = doc['titolo']
-            indirizzo = doc['indirizzo']
-            tipo_prova = doc['tipo_prova']
-            difficolta = doc['difficolta']
-            durata = doc['durata']
-            classe = doc['classe']
-            materia = doc['materia']
-            griglia = doc['griglia']
             testo = doc['testo']
+            griglia = doc['griglia']
+            titolo = doc['titolo']
+            difficolta = doc['difficolta']
+            materia = doc['materia']
+          
+            durata = doc['durata']
+        
             dataDict = {
                 'id': id,
-                'titolo': titolo,
-                'indirizzo': indirizzo,
-                'tipo_prova': tipo_prova,
-                'difficolta': difficolta,
-                'durata': durata,
-                'classe': classe,
-                'materia': materia,
+                'testo': testo,
                 'griglia': griglia,
-                'testo': testo
+                'titolo': titolo,
+                'difficolta': difficolta,
+                'materia': materia,
+               
+                'durata': durata,
+          
              }
         dataJson.append(dataDict)
         return jsonify(dataJson)
 
 
-@app.route('/verifiche/<int:id>', methods=['GET', 'DELETE', 'PUT'])
+@app.route('/verifica/<int:id>', methods=['GET', 'DELETE', 'PUT'])
 def onedata1(id):
 
     # GET a specific data by id
@@ -196,19 +190,17 @@ def onedata1(id):
         conn = connection()
         # Create a cursor
         cur = conn.cursor(as_dict=True)
-        cur.execute("SELECT * FROM Progetto.verifica WHERE id = %s", (id, ))
+        cur.execute("SELECT * FROM progetto.verifica WHERE id = %s", (id, ))
         ver = cur.fetchone()
         dataDict = {
             'id' : ver['id'],
+            'testo' : ver['testo'],
+            'griglia' : ver['griglia'],
             'titolo' : ver['titolo'],
-            'indirizzo' : ver['indirizzo'],
-            'tipo_prova' : ver['tipo_prova'],
             'difficolta' : ver['difficolta'],
-            'durata' :ver['durata'],
-            'classe' : ver['classe'],
             'materia' :ver['materia'],
-            'griglia' :ver['griglia'],
-            'testo' : ver['testo']
+            'durata' :ver['durata'],
+      
         }
         cur.close()
         conn.close()
@@ -219,10 +211,10 @@ def onedata1(id):
         conn = connection()
         cur = conn.cursor()
 
-        cur.execute('SELECT * FROM Progetto.verifica WHERE id = %s', (id,))
+        cur.execute('SELECT * FROM progetto.verifica WHERE id = %s', (id,))
         ver = cur.fetchone()
         if ver:
-            cur.execute('DELETE FROM Progetto.verifica WHERE id = %s', (id,))
+            cur.execute('DELETE FROM progetto.verifica WHERE id = %s', (id,))
             conn.commit()
             cur.close()
             conn.close()
@@ -233,23 +225,21 @@ def onedata1(id):
     # UPDATE a data by id
     if request.method == 'PUT':
         body = request.json
-        titolo = body['titolo']
-        indirizzo = body['indirizzo']
-        tipo_prova = body['tipo_prova']
-        difficolta = body['difficolta']
-        durata = body['durata']
-        classe = body['classe']
-        materia = body['materia']
-        griglia = body['griglia']
         testo = body['testo']
+        griglia = body['griglia']
+        titolo = body['titolo']
+        difficolta = body['difficolta']
+        materia = body['materia']
+        durata = body['durata']
+    
 
         conn = connection()
         cur = conn.cursor()
         cur.execute("SELECT * FROM Progetto.verifica WHERE id = %s", (id,))
         ver = cur.fetchone()
         if ver:
-            cur.execute("UPDATE Progetto.verifica SET titolo = %s, indirizzo = %s, tipo_prova = %s, difficolta = %s, durata = %s, classe = %s, materia = %s, griglia = %s, testo = %s WHERE id = %s",
-                        (titolo, indirizzo, tipo_prova, difficolta, durata, classe, materia, griglia, testo ,id))
+            cur.execute("UPDATE Progetto.verifica SET testo = %s, griglia = %s, titolo = %s, difficolta = %s, materia = %s, durata = %s, WHERE id = %s",
+                        (testo, griglia, titolo, difficolta, materia, durata, id))
             conn.commit()
             cur.close()
             conn.close()

@@ -3,25 +3,24 @@
     <h2>User Registration</h2>
     <form (ngSubmit)="register()">
       <div class="form-group mb-2">
-        <label for="name">nome:</label>
-        <input type="text" class="form-control" id="nome" [(ngModel)]="nome" name="nome" placeholder="nome">
+        <label for="name">Nome:</label>
+        <input type="text" class="form-control" id="nome" [(ngModel)]="nome" name="nome" >
       </div>
       <div class="form-group mb-2">
-        <label for="cognome">Cognome</label>
-        <input type="text" class="form-control" id="cognome" [(ngModel)]="cognome" cognome="cognome" placeholder="Enter Last Name">
+        <label for="cognome">Cognome:</label>
+        <input type="text" class="form-control" id="cognome" [(ngModel)]="cognome" cognome="cognome">
       </div>
       <div class="form-group mb-2">
         <label for="email">Email:</label>
-        <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email" placeholder="Enter email">
+        <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email" >
       </div>
       <div class="form-group mb-4">
         <label for="pwd">Password:</label>
         <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password"
-          placeholder="Enter password">
+          >
       </div>
-      <button type="submit" class="btn btn-danger mb-4">Register</button>
-      <p class="bottom">Already have an account? <a routerLink="/login">Login here</a>
-      </p>
+      <button type="submit" class="btn btn-primary mb-5">Register</button>
+    
     </form>
   </div>
 </div>

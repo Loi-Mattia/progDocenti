@@ -1,13 +1,12 @@
-npm i -g @angular/cli
-ng serve --disable-host-check
+#npm i -g @angular/cli
+#ng serve --disable-host-check
  
  
- pip install flask
- pip install flask_mysqldb
- pip install flask_restful
- pip install flask_cors
- pip install pymssql
- pip install pandas
- pip install bson
- pip install psycopg2
- python app.py
+flask
+flask_mysqldb
+flask_restful
+flask_cors
+pymssql
+pandas
+bson
+psycopg2

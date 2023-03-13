@@ -63,17 +63,17 @@ def login():
         cursor = conn.cursor()
         # Execute a SELECT query
         cursor.execute(
-            'SELECT * FROM progetto.docente WHERE mail=%s AND password=%s', (email, password))
+            'SELECT * FROM progetto.docente WHERE email=%s AND password=%s', (email, password))
         # Fetch the data
         user = cursor.fetchone()
         if user:
-            return jsonify({"message": "Logged in successfully", "mail": email, "password": password}), 200
+            return jsonify({"message": "Logged in successfully", "email": email, "password": password}), 200
         else:
             return jsonify("Doesn't match"), 400
 
     return jsonify({"message": "Error"}), 400
 
-
+          
 @app.route('/logout')
 def logout():
     if 'loggedin' in session:

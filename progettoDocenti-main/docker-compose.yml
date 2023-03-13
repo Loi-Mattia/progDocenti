@@ -17,7 +17,7 @@ services:
         #In questo modo dico a docker di usare la cartella del container /app/node_modules come volume
         #La cartella locale node_modules (se non ha modifiche) non verrà più copiata perchè il volume esiste già
         #Se c'è già l'immagine docker-compose non la builda
-        - /app/node_modules 
+        - /progDocenti/node_modules
         #Qui mappa tutto il contenuto della cartella locale client nella cartella app dell'immagine
         #Ricorda che la WORKDIR dell'immagine è la cartella app
         - ./progDocenti:/app
